@@ -2,8 +2,6 @@ import throttle from "lodash.throttle";
 
 const refs = { // refs to html elements
     form : document.querySelector('form'),
-    textarea: document.querySelector('textarea[name="message"]'),
-    email: document.querySelector('input[name="email"]'),
 };
 
 const STORAGE_KEY = "feedback-form-state"; // const for all needed usage
@@ -19,26 +17,31 @@ savedData(); // here we show data from localStorage if they even exist
 function inputChange (e){   // here we save user data in localStorage in the obj way
     formData[e.target.name] = e.target.value;
 
-    const userData = localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-
-    return userData;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 };
 
 function onFormSubmit (e){   // we prewent reboot of page, and parsing data from localStorage, after parse we delete data from LS
+    
     e.preventDefault();
+
+    if(refs.form.elements.email.value === ''|| refs.form.elements.message.value === ''){
+        return alert('We cannot find you if you did not give us information about yourself, so please, FBI need it, fill the lines');
+    };
 
     console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)));
 
     e.currentTarget.reset();
 
     localStorage.removeItem(STORAGE_KEY);
+
+    
 };
 
 function savedData() {  // we show data from local storage if page was accidantly reboot
     const lastData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
     if(lastData){
-        refs.textarea.value = lastData.message;
-        refs.email.value = lastData.email;
+        refs.form.elements.message.value = lastData.message;
+        refs.form.elements.email.value = lastData.email;
     };
 };

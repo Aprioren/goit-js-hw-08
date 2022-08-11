@@ -21,5 +21,3 @@ const timeOfVideo =  localStorage.getItem(VIDEO_PLAYER_TIME); // get actual time
 const lastTimeWatch = JSON.parse(timeOfVideo); // parsing data 
 
 player.setCurrentTime(lastTimeWatch.seconds); // set the seconds of last time played at player
-
-localStorage.removeItem(VIDEO_PLAYER_TIME); // remove from localStorage
